@@ -9,7 +9,7 @@ int main() {
     struct sockaddr_in serveraddr, clientaddr;
     socklen_t len;
     int a, b, sum = 0;
-    struct serveraddr; //can cause error
+    struct serveraddr; 
     serversocket = socket(AF_INET, SOCK_STREAM, 0);
     bzero((char*)&serveraddr, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
