@@ -5,6 +5,7 @@
 #include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #define PORT 4444
 #define BUF_SIZE 2000
