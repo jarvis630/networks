@@ -12,7 +12,7 @@ int main() {
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     client.sin_family = AF_INET;
-    client.sin_port = 3033;
+    client.sin_port = 7745;
     client.sin_addr.s_addr = INADDR_ANY;
 
     printf("\nStarting up...");
@@ -54,3 +54,10 @@ int main() {
     close(sockfd);
     return 0;
 }
+
+
+
+
+
+
+
