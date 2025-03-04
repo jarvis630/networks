@@ -39,7 +39,7 @@ int main() {
             wait--;
         }
 
-        if (wait) {
+        if (!wait) {
             printf("\n*** Packet Accepted -> Sending ACK");
             wait = 3;
             sprintf(data, "A");
