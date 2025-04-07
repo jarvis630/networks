@@ -1,0 +1,74 @@
+Algorithm for a UDP Server to Compute Factorial
+Step 1: Initialize the server
+Declare variables:
+
+serversocket (server socket descriptor)
+port (port number)
+num (number received from the client)
+result (calculated factorial result)
+serveraddr and clientaddr (address structures for server and client)
+len (size of clientaddr)
+buffer[256] (buffer for message exchange)
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+
+Check if socket creation is successful; if not, print an error and exit.
+
+Step 2: Configure the server address
+Initialize serveraddr using bzero() or memset().
+Set serveraddr.sin_family = AF_INET (IPv4).
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Set serveraddr.sin_addr.s_addr = INADDR_ANY (listen on any available network interface).
+Step 3: Bind the socket to the port
+Call bind() to associate the socket with the specified port.
+If bind() fails, print an error and exit.
+Print a message indicating that the server is waiting for a client message.
+Step 4: Receive data from the client
+Start an infinite loop (while(1)) to keep listening for client messages.
+Initialize the buffer to empty using bzero().
+Call recvfrom() to receive a message from the client.
+If recvfrom() fails, print an error and continue to the next iteration.
+Convert the received string to an integer using sscanf().
+Print the received number.
+Step 5: Compute the factorial
+Call the factorial(num) function to compute the factorial of the received number.
+Print the calculated factorial value.
+Step 6: Send the result back to the client
+Format the factorial result into a string using snprintf().
+Call sendto() to send the factorial result back to the client.
+If sendto() fails, print an error message.
+Step 7: Close the server socket (if terminated manually)
+Close the server socket using close().
+Exit the program.
+
+Algorithm for UDP Client to Request Factorial Calculation
+Step 1: Initialize the client
+Declare variables:
+
+clientsocket (client socket descriptor)
+port (port number)
+num (number to send to the server)
+serveraddr (address structure for server)
+len (size of serveraddr)
+buffer[256] (buffer for message exchange)
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+
+Step 2: Configure the server address
+Initialize serveraddr using bzero() or memset().
+Set serveraddr.sin_family = AF_INET (IPv4).
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Set serveraddr.sin_addr.s_addr = INADDR_ANY (server's IP address placeholder).
+Step 3: Send a number to the server
+Prompt the user to enter a number to calculate its factorial.
+Store the number in num.
+Convert num into a string using snprintf() and store it in buffer.
+Use sendto() to send buffer (containing num) to the server.
+Step 4: Receive response from the server
+Print a message indicating that the client is waiting for the server's response.
+Clear buffer using bzero().
+Call recvfrom() to receive the factorial result from the server.
+Print the received message.
+Step 5: Close the connection
+Close the client socket using close().
+Exit the program.
