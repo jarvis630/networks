@@ -1,0 +1,120 @@
+Algorithm for Sliding Window Protocol Server (Go-Back-N ARQ)
+This algorithm implements a Go-Back-N ARQ server using a sliding window mechanism over TCP.
+
+Step 1: Initialize Server
+Declare and define necessary variables:
+
+sockfd: Socket descriptor for the server.
+newSockFd: Socket descriptor for the client.
+windowStart = 1: Start of the sliding window.
+windowCurrent = 1: Current frame being processed.
+windowEnd = 4: End of the sliding window (assumed window size = 4).
+buffer: Character array for receiving and sending messages.
+server: Structure for server socket address.
+client: Structure for client socket address.
+Create a TCP socket using socket(AF_INET, SOCK_STREAM, 0).
+
+Initialize the server address structure:
+
+server.sin_family = AF_INET (IPv4).
+server.sin_port = 7745 (predefined port).
+server.sin_addr.s_addr = INADDR_ANY (accepts any incoming connection).
+Bind the socket using bind(). If it fails, print an error message.
+
+Listen for a client connection using listen(sockfd, 1).
+
+Accept the connection from the client using accept().
+
+Receive an initial request from the client.
+
+Set the socket to non-blocking mode using fcntl(newSockFd, F_SETFL, O_NONBLOCK).
+
+Step 2: Start Sliding Window Transmission
+Print a message indicating the transmission is starting.
+Start a loop to send frames:
+Check if the window has remaining frames to send:
+
+Convert windowCurrent to a string using itoa().
+Send the current packet using send().
+Print a confirmation message for the sent packet.
+Move windowCurrent forward.
+Check for acknowledgment (ACK) or retransmission (RETRANSMIT) messages:
+
+Receive a message from the client using recv().
+Case 1: Retransmission Request (R)
+
+If the message starts with 'R' (Retransmit):
+Print a retransmission message.
+Extract the packet number from the received message.
+Convert it back to a string and resend it.
+Reset windowCurrent to this packet number + 1.
+Case 2: Acknowledgment (A)
+
+If the message starts with 'A' (Acknowledgment):
+Extract the acknowledged packet number.
+Move the window start to the next packet.
+Extend the window end by the same amount.
+Print the updated window boundary.
+Step 3: Stop Transmission and Close Sockets
+Continue sending and receiving until windowCurrent == 10.
+Close the sockets using close(sockfd) and close(newSockFd).
+Print a message indicating the completion of transmission.
+Exit the program.
+
+
+
+Algorithm for Sliding Window Protocol Client (Go-Back-N ARQ)
+This algorithm implements a Sliding Window Client using Go-Back-N ARQ to request and receive packets reliably over TCP.
+
+Step 1: Initialize Client
+Declare and define necessary variables:
+
+sockfd: Socket descriptor for the client.
+newSockFd: Socket descriptor for communication.
+size: Stores the size of the socket structure.
+firstTime = 1: Flag to simulate packet corruption once.
+currentPacket: Stores the packet number received.
+wait = 3: Controls when to send an acknowledgment.
+data[100]: Buffer to store received data.
+digit[2]: Temporary buffer for acknowledgment message.
+client: Structure to store server socket information.
+Create a TCP socket using socket(AF_INET, SOCK_STREAM, 0).
+
+Initialize the client address structure:
+
+client.sin_family = AF_INET (IPv4).
+client.sin_port = 7745 (predefined port).
+client.sin_addr.s_addr = INADDR_ANY (accepts any IP).
+Print message indicating startup.
+
+Establish a connection to the server using connect().
+
+Step 2: Send Initial Request
+Send an initial request to the server:
+Store "REQUEST" in data.
+Send the request using send().
+Step 3: Receive Packets and Handle Errors
+Start receiving packets from the server in a loop:
+
+Use recv() to receive a packet from the server.
+Convert received data to an integer (currentPacket).
+Print the received packet number.
+Check for a simulated packet loss (for packet 3):
+
+If currentPacket == 3 and firstTime == 1:
+Print a message indicating packet corruption.
+Send a Retransmission Request (R1) for packet 1 using send().
+Set firstTime = 0 (so this happens only once).
+Otherwise, decrement wait (used for ACK timing).
+Step 4: Send Acknowledgments
+Check if an acknowledgment should be sent:
+If wait == 0:
+Print a message indicating acknowledgment.
+Reset wait = 3.
+Prepare an acknowledgment message "A<packet_number>".
+Send the acknowledgment using send().
+Step 5: End Communication
+Continue receiving and processing packets until currentPacket == 9.
+Print a message indicating all packets are received.
+Close the socket using close(sockfd).
+Exit the program.
