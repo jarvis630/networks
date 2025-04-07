@@ -1,0 +1,51 @@
+Algorithm for a UDP Server That Receives and Sends Messages
+Step 1: Initialize the server
+Declare variables for the server socket, port number, address structures, and message buffer.
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+Check if the socket creation is successful; if not, exit with an error.
+Step 2: Configure the server address
+Initialize the serveraddr structure using bzero() or memset().
+Set the server address family to AF_INET.
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Set the server’s IP address to INADDR_ANY (accept connections from any IP).
+Step 3: Bind the socket
+Call bind() to associate the socket with the specified port.
+If bind() fails, print an error message and exit.
+Print a message indicating that the server is waiting for a client connection.
+Step 4: Receive a message from the client
+Initialize the clientaddr structure using bzero() or memset().
+Set len to the size of clientaddr.
+Call recvfrom() to receive a message from the client.
+Print a message confirming that data has been received.
+Display the received message.
+Step 5: Send a response to the client
+Print a message indicating that the server is sending a response.
+Call sendto() to send a confirmation message to the client.
+Print a message confirming that the response has been sent.
+Step 6: Close the connection
+Close the server socket using close().
+Exit the program.
+
+
+Algorithm for a UDP Client That Sends and Receives Messages
+Step 1: Initialize the client
+Declare variables for the client socket, port number, server address structure, and message buffer.
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+Check if the socket creation is successful; if not, exit with an error.
+Step 2: Configure the server address
+Initialize the serveraddr structure using bzero() or memset().
+Set the server address family to AF_INET.
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Step 3: Send a message to the server
+Prompt the user for input (optional).
+Send a predefined message ("HI I AM CLIENT...") to the server using sendto().
+Print a message confirming that the message has been sent.
+Step 4: Receive a response from the server
+Call recvfrom() to receive a message from the server.
+Print a message indicating that data has been received.
+Display the received message.
+Step 5: Close the connection
+Close the client socket using close().
+Exit the program.
