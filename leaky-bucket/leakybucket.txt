@@ -1,0 +1,31 @@
+Algorithm for Leaky Bucket Packet Scheduling
+This algorithm simulates the Leaky Bucket Algorithm, which is used for traffic shaping in networking. It controls the data flow in a network by limiting the transmission rate and avoiding congestion.
+
+Step 1: Initialize Parameters
+Input the bucket size (bsize).
+Input the number of incoming packets (n).
+Input the outgoing transmission rate (leakrate).
+Initialize bucket_storage = 0 (i.e., bucket is initially empty).
+Print the initial bucket status.
+Step 2: Process Each Incoming Packet
+Repeat for n incoming packets:
+Input the incoming packet size (in).
+Print the incoming packet size.
+Check if the packet can be accommodated:
+If in fits in the remaining bucket space (bsize - bucket_storage):
+Add in to bucket_storage.
+Print the updated bucket status.
+Else:
+Drop excess packets (in - (bsize - bucket_storage)).
+Set bucket_storage = bsize (bucket is full).
+Print the updated bucket status.
+Transmit packets (leakrate packets per unit time):
+Subtract leakrate from bucket_storage.
+If bucket_storage < 0, reset it to 0 (no negative values).
+Print the number of packets transmitted and the updated bucket status.
+Step 3: Empty the Bucket After Processing All Packets
+If any packets remain in the bucket:
+Set bucket_storage = 0 (empty the bucket).
+Print the final bucket status.
+Step 4: Terminate the Program
+Exit successfully after processing all packets.
