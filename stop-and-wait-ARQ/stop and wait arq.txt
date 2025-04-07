@@ -1,0 +1,82 @@
+Algorithm for Stop-and-Wait ARQ Server (UDP-Based)
+This algorithm describes the functioning of a Stop-and-Wait Automatic Repeat reQuest (ARQ) server using UDP.
+
+Step 1: Initialize Server
+Parse the command-line arguments to get the port number.
+Convert the port number from a string to an integer.
+Define necessary variables:
+sockfd: Socket descriptor.
+serverAddr: Server address structure.
+newAddr: Client address structure.
+buffer: Buffer for incoming data.
+frame_recv: Frame structure to store received data.
+frame_send: Frame structure to send acknowledgments.
+frame_id: Variable to track the expected frame sequence number.
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+Set up the server address structure:
+serverAddr.sin_family = AF_INET (IPv4).
+serverAddr.sin_port = htons(port).
+serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1").
+Bind the socket to the given port using bind().
+Step 2: Wait for Frames in a Loop
+Start an infinite loop to receive data continuously.
+Receive a frame using recvfrom(), storing it in frame_recv.
+Check if the received frame is valid:
+If the received frame is of type data frame (frame_kind == 1) and its sequence number matches frame_id:
+Print the received frame content.
+Prepare an acknowledgment frame (ack = frame_recv.sq_no + 1).
+Send the acknowledgment frame using sendto().
+Print confirmation of acknowledgment.
+If the frame is not valid, print an error message.
+Increment frame_id to expect the next frame.
+Step 3: Cleanup
+The loop continues indefinitely, processing incoming frames.
+When the server stops, close the socket.
+
+Algorithm for Stop-and-Wait ARQ Client (UDP-Based)
+This algorithm describes the Stop-and-Wait Automatic Repeat reQuest (ARQ) client that sends frames reliably over UDP.
+
+Step 1: Initialize Client
+Parse the command-line arguments to get the port number.
+Convert the port number from a string to an integer.
+Define necessary variables:
+sockfd: Socket descriptor.
+serverAddr: Server address structure.
+buffer: Buffer for user input.
+frame_send: Frame structure for sending data.
+frame_recv: Frame structure for receiving acknowledgment.
+frame_id: Variable to track sequence numbers.
+ack_recv: Flag to check if acknowledgment is received.
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+Set up the server address structure:
+serverAddr.sin_family = AF_INET (IPv4).
+serverAddr.sin_port = htons(port).
+serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1").
+Step 2: Send Data Frames in a Loop
+Start an infinite loop to send data continuously.
+Check if the previous frame was acknowledged:
+If ack_recv == 1, prepare a new frame:
+Set frame_send.sq_no = frame_id.
+Set frame_send.frame_kind = 1 (data frame).
+Set frame_send.ack = 0.
+Read user input into buffer.
+Copy buffer into frame_send.packet.data.
+Send the frame to the server using sendto().
+Print confirmation of frame transmission.
+Wait for Acknowledgment:
+Receive a frame using recvfrom().
+Check if:
+frame_recv.sq_no == 0 (ack frame).
+frame_recv.ack == frame_id + 1 (valid acknowledgment).
+If acknowledgment is valid:
+Print acknowledgment confirmation.
+Set ack_recv = 1 (ready to send next frame).
+Otherwise:
+Print acknowledgment failure.
+Set ack_recv = 0 (retransmit the frame).
+Step 3: Prepare for Next Frame
+Increment frame_id to send the next frame.
+Continue the loop until interrupted.
+Step 4: Cleanup
+Close the socket using close(sockfd).
+Exit the program.
