@@ -1,0 +1,77 @@
+Algorithm for a Simple TCP Server in C
+Step 1: Start the server
+
+Declare variables for sockets, port number, and server-client addresses.
+Create a socket using socket(AF_INET, SOCK_STREAM, 0).
+Check if the socket was successfully created; if not, exit with an error.
+Step 2: Configure the server
+4. Initialize the serveraddr structure using memset().
+5. Set the server address family to AF_INET.
+6. Prompt the user to enter a port number and store it.
+7. Convert the port number to network byte order using htons().
+8. Set the server’s IP address to INADDR_ANY (accept connections from any IP).
+
+Step 3: Bind the socket
+9. Bind the socket using bind().
+10. If bind() fails, print an error message and exit.
+
+Step 4: Listen for client connections
+11. Call listen() to allow up to 5 client connections.
+12. If listen() fails, print an error message and exit.
+13. Print a message indicating the server is waiting for client connections.
+
+Step 5: Accept a client connection
+14. Accept a connection using accept().
+15. If accept() fails, print an error message and exit.
+16. Print a message confirming the client is connected.
+
+Step 6: Communicate with the client
+17. Initialize the message buffer using memset().
+18. Read the message sent by the client using read().
+19. Ensure the message is null-terminated for safe printing.
+20. Print the received message.
+
+Step 7: Send response to the client
+21. Send the response "Your message received" to the client using write().
+22. If write() fails, print an error message and exit.
+23. Print a message confirming the response was sent.
+
+Step 8: Close connections
+24. Close the client socket.
+25. Close the server socket.
+26. Exit the program.
+
+
+Algorithm for a Simple TCP Client in C
+Step 1: Initialize the client
+
+Declare variables for the client socket, port number, server address, and message buffer.
+Create a socket using socket(AF_INET, SOCK_STREAM, 0).
+Check if the socket was successfully created; if not, exit with an error.
+Step 2: Configure the server address
+4. Initialize the serveraddr structure using bzero() (or memset()).
+5. Set the server address family to AF_INET.
+6. Prompt the user to enter the port number and store it.
+7. Convert the port number to network byte order using htons().
+
+Step 3: Connect to the server
+8. Print a message indicating that the client is attempting to connect to the server.
+9. Call connect() to establish a connection with the server.
+10. If connect() fails, print an error message and exit.
+11. Print a message confirming the connection was successful.
+
+Step 4: Send a message to the server
+12. Print a message indicating that the client is sending a message.
+13. Send the message "HI, IAM CLIENT..." to the server using send().
+14. If send() fails, print an error message and exit.
+
+Step 5: Receive a response from the server
+15. Print a message indicating that the client is waiting to receive a message.
+16. Receive the message from the server using recv().
+17. If recv() fails, print an error message and exit.
+18. Ensure the message is null-terminated for safe printing.
+19. Print the received message.
+
+Step 6: Close the connection
+20. Close the client socket using close().
+21. Exit the program.
