@@ -1,0 +1,69 @@
+Algorithm for a TCP Server That Computes the Factorial of a Number
+Step 1: Initialize the server
+Declare variables for the server socket, client socket, port number, and address structures.
+Declare integer variables num (for the received number) and result (to store the factorial result).
+Create a socket using socket(AF_INET, SOCK_STREAM, 0).
+Check if the socket creation is successful; if not, exit with an error.
+Step 2: Configure the server address
+Initialize the serveraddr structure using bzero() or memset().
+Set the server address family to AF_INET.
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Set the server’s IP address to INADDR_ANY (accept connections from any IP).
+Step 3: Bind and listen for client connections
+Call bind() to associate the socket with the specified port.
+If bind() fails, print an error message and exit.
+Call listen() to allow up to 5 client connections.
+If listen() fails, print an error message and exit.
+Print a message indicating that the server is waiting for a client connection.
+Step 4: Accept a client connection
+Accept an incoming connection using accept().
+If accept() fails, print an error message and exit.
+Print a message confirming that the client is connected.
+Step 5: Receive a number from the client
+Print a message indicating that the server is waiting to receive a number.
+Read the number sent by the client using read().
+Print the received number.
+Step 6: Compute the factorial
+Call the factorial() function recursively to compute the factorial of num.
+Print the computed factorial.
+Step 7: Send the factorial to the client
+Print a message indicating that the server is sending the factorial.
+Send the computed factorial result back to the client using write().
+Print a message confirming that the result was sent.
+Step 8: Close connections
+Close the client socket using close().
+Close the server socket using close().
+Exit the program.
+
+
+Algorithm for a TCP Client That Sends a Number and Receives Its Factorial
+Step 1: Initialize the client
+Declare variables for the client socket, port number, server address structure, and number to be sent.
+Declare an integer variable result to store the factorial received from the server.
+Create a socket using socket(AF_INET, SOCK_STREAM, 0).
+Check if the socket creation is successful; if not, exit with an error.
+Step 2: Configure the server address
+Initialize the serveraddr structure using bzero() or memset().
+Set the server address family to AF_INET.
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Step 3: Connect to the server
+Print a message indicating that the client is attempting to connect to the server.
+Call connect() to establish a connection with the server.
+If connect() fails, print an error message and exit.
+Print a message confirming that the connection was successful.
+Step 4: Get user input
+Prompt the user to enter a number.
+Read the number from the user and store it in num.
+Step 5: Send the number to the server
+Send the number (num) to the server using send().
+Print a message confirming that the number has been sent.
+Step 6: Receive the factorial from the server
+Print a message indicating that the client is waiting to receive the factorial.
+Receive the computed factorial from the server using recv().
+If recv() fails, print an error message and exit.
+Print the received factorial.
+Step 7: Close the connection
+Close the client socket using close().
+Exit the program.
