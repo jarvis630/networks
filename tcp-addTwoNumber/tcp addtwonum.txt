@@ -1,0 +1,71 @@
+Algorithm for a TCP Server That Computes the Sum of Two Numbers
+Step 1: Initialize the server
+Declare variables for the server socket, client socket, port number, and address structures.
+Declare integer variables a, b, and sum to store the numbers and their sum.
+Create a socket using socket(AF_INET, SOCK_STREAM, 0).
+Check if the socket creation is successful; if not, exit with an error.
+Step 2: Configure the server address
+Initialize the serveraddr structure using bzero() or memset().
+Set the server address family to AF_INET.
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Set the server’s IP address to INADDR_ANY (accept connections from any IP).
+Step 3: Bind the server socket
+Call bind() to associate the socket with the specified port.
+If bind() fails, print an error message and exit.
+Step 4: Listen for client connections
+Call listen() to allow up to 5 client connections.
+If listen() fails, print an error message and exit.
+Print a message indicating that the server is waiting for a client connection.
+Step 5: Accept a client connection
+Accept an incoming connection using accept().
+If accept() fails, print an error message and exit.
+Print a message confirming that the client is connected.
+Step 6: Receive numbers from the client
+Read the first number from the client using read().
+Read the second number from the client using read().
+Print the received numbers.
+Step 7: Compute the sum
+Compute the sum of the two numbers (sum = a + b).
+Print the computed sum.
+Step 8: Send the sum to the client
+Send the computed sum back to the client using write().
+Print a message confirming that the sum was sent to the client.
+Step 9: Close connections
+Close the client socket using close().
+Close the server socket using close().
+Exit the program.
+
+
+
+Algorithm for a TCP Client That Sends Two Numbers and Receives Their Sum
+Step 1: Initialize the client
+Declare variables for the client socket, port number, server address structure, and numbers to be sent.
+Declare an integer variable sum to store the sum received from the server.
+Create a socket using socket(AF_INET, SOCK_STREAM, 0).
+Check if the socket creation is successful; if not, exit with an error.
+Step 2: Configure the server address
+Initialize the serveraddr structure using bzero() or memset().
+Set the server address family to AF_INET.
+Prompt the user to enter the port number and store it in port.
+Convert the port number to network byte order using htons().
+Step 3: Connect to the server
+Print a message indicating that the client is attempting to connect to the server.
+Call connect() to establish a connection with the server.
+If connect() fails, print an error message and exit.
+Print a message confirming that the connection was successful.
+Step 4: Get user input
+Prompt the user to enter two numbers.
+Read the two numbers from the user and store them in a and b.
+Step 5: Send the numbers to the server
+Send the first number (a) to the server using send().
+Send the second number (b) to the server using send().
+Print a message confirming that the numbers have been sent.
+Step 6: Receive the sum from the server
+Print a message indicating that the client is waiting to receive the sum.
+Receive the computed sum from the server using recv().
+If recv() fails, print an error message and exit.
+Print the received sum.
+Step 7: Close the connection
+Close the client socket using close().
+Exit the program.
