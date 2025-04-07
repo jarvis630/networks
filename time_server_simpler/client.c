@@ -20,7 +20,7 @@ void main() {
 
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = PORT;
-	serveraddr.sin_addr.s_addr = inet_addr("10.0.2.4");
+	serveraddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	clientsocket = socket(AF_INET, SOCK_DGRAM, 0);
 
