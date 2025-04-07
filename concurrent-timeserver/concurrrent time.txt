@@ -1,0 +1,95 @@
+Algorithm for UDP Time Server
+This algorithm implements a UDP-based Time Server that receives requests from clients and responds with the current system time.
+
+Step 1: Initialize Server
+Parse command-line arguments:
+
+Expect one argument: the port number.
+If the argument is missing, print usage instructions and exit.
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+
+If socket creation fails, print an error message and exit.
+Initialize the server address structure:
+
+Set servaddr.sin_family = AF_INET (IPv4).
+Convert the given port number to network byte order using htons().
+Set servaddr.sin_addr.s_addr = INADDR_ANY (accept connections from any IP).
+Bind the socket to the server address and port using bind().
+
+If binding fails, print an error message and exit.
+Step 2: Receive Requests from Clients
+Declare a buffer (buffer[1024]) for message storage.
+Start an infinite loop to handle incoming requests.
+Receive a message from a client using recvfrom():
+Store the client's address in cliaddr.
+If recvfrom() fails, print an error message and exit.
+Step 3: Fork a Child Process to Handle Each Client
+Get the current system time using time(NULL).
+
+Convert the time into a readable format using ctime().
+
+Store the formatted time string in buffer.
+
+Fork a new process (cp = fork()) to handle the client:
+
+If cp == 0 (child process):
+Start an infinite loop for communication.
+Send the current time to the client using sendto().
+Clear the buffer and wait for a new request from the same client.
+Repeat until the client disconnects.
+If cp < 0 (fork failed), print an error message and exit.
+Step 4: Close the Socket and Exit
+If the loop is broken (e.g., on termination), close the server socket using close(s).
+Exit the program.
+
+
+
+
+Algorithm for UDP Time Client
+This algorithm implements a UDP-based Time Client that sends a request to a UDP Time Server and receives the current system time.
+
+Step 1: Initialize Client
+Parse command-line arguments:
+
+Expect two arguments:
+argv[1] = Server IP Address.
+argv[2] = Port Number.
+If the required arguments are missing, print usage instructions and exit.
+Create a UDP socket using socket(AF_INET, SOCK_DGRAM, 0).
+
+If socket creation fails, print an error message and exit.
+Initialize the client’s local address structure (local):
+
+Set local.sin_family = AF_INET (IPv4).
+Set local.sin_port = htons(6677) (client-side port).
+Convert argv[1] (server IP) to network byte order using inet_addr(argv[1]).
+Bind the socket to the client’s address using bind().
+
+If binding fails, print an error message and exit.
+Step 2: Configure Server Address
+Initialize the server address structure (servaddr):
+Set servaddr.sin_family = AF_INET (IPv4).
+Convert argv[2] (port number) to network byte order using htons(atoi(argv[2])).
+Convert argv[1] (server IP) to network byte order using inet_addr(argv[1]).
+Step 3: Send Time Request to Server
+Prepare the request message:
+
+Store "TIME" in the buffer.
+Send the "TIME" request to the server using sendto():
+
+If sending fails, print an error message and exit.
+Step 4: Receive Server Response
+Print a message: "The current time is:" (for display).
+
+Wait for a response from the server using recvfrom():
+
+If data is received (n > 0), add a null terminator (buffer[n] = '\0').
+Print the received time string.
+Handle errors:
+
+If recvfrom() fails (n < 0), print an error message and exit.
+If no data is received (n == 0), print "Server closed connection" and exit.
+Step 5: Cleanup and Exit
+Clear the buffer using memset().
+Close the socket using close(s).
+Exit the program.
