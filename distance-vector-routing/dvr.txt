@@ -1,0 +1,30 @@
+Algorithm for Distance Vector Routing (Bellman-Ford Algorithm)
+This algorithm implements the Distance Vector Routing using the Bellman-Ford Algorithm, commonly used in networking for routing tables.
+
+Step 1: Initialize Routing Tables
+Input the number of nodes (nodes).
+Input the cost matrix (costmat[][]):
+Read the cost (weight) of edges between each pair of nodes.
+Set the cost of a node to itself as 0.
+Initialize each router's distance vector (rt[i].dist[]) with direct costs.
+Set the next-hop (rt[i].from[]) for each destination as the node itself.
+Step 2: Update Routing Tables Using Bellman-Ford Algorithm
+Repeat until no more updates occur:
+Set count = 0 (to track updates).
+For each router (i):
+For each destination (j):
+For each intermediate node (k):
+If the distance from i to j through k is shorter than the current known distance:
+Update rt[i].dist[j] = rt[i].dist[k] + rt[k].dist[j].
+Update rt[i].from[j] = k (update next-hop to k).
+Increase count (indicating an update occurred).
+Repeat until count == 0 (i.e., no more updates are needed).
+Step 3: Print Final Routing Tables
+For each router (i):
+Print the routing table.
+For each node (j), print:
+Destination node (j + 1).
+Next-hop (rt[i].from[j] + 1).
+Minimum distance (rt[i].dist[j]).
+Step 4: Terminate the Program
+Exit successfully after printing the routing tables.
