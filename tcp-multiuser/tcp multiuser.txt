@@ -1,0 +1,97 @@
+Step 1: Initialize the server
+Declare necessary variables:
+
+sockfd (server socket descriptor)
+newsockfd (client socket descriptor)
+addr (server address structure)
+cl_addr (client address structure)
+len (size of client address structure)
+ret (return value for error handling)
+buffer (buffer to store messages)
+childpid (process ID for child process)
+clientAddr (to store the client's IP address)
+Create a TCP socket using socket(AF_INET, SOCK_STREAM, 0).
+
+If the socket creation fails, print an error message and exit.
+Step 2: Bind the socket
+Initialize addr structure:
+
+Set addr.sin_family = AF_INET (IPv4).
+Set addr.sin_addr.s_addr = INADDR_ANY (bind to any available network interface).
+Set addr.sin_port = htons(PORT) (convert port number to network byte order).
+Bind the socket using bind().
+
+If binding fails, print an error message and exit.
+Step 3: Listen for client connections
+Call listen(sockfd, 5) to enable listening mode (queue up to 5 pending connections).
+Print a message indicating the server is waiting for a connection.
+Step 4: Accept and handle client connections
+Run an infinite loop to continuously accept incoming client connections.
+
+Accept a client connection using accept(), storing the client’s address in cl_addr.
+
+If accept() fails, print an error message and exit.
+Convert the client’s IP address from binary to string format using inet_ntop() and store it in clientAddr.
+
+Step 5: Create a new process to handle the client
+Use fork() to create a child process.
+
+If in the child process:
+Close the original sockfd (the server keeps the listener open).
+Enter an infinite loop to handle client communication.
+Inside the client-handling loop:
+
+Clear buffer using memset().
+Receive data from the client using recv().
+If reception fails, print an error message and exit.
+Print the received message along with the client’s IP address.
+Send the same message back to the client using send().
+If sending fails, print an error message and exit.
+Print a confirmation message indicating data was sent.
+Step 6: Cleanup
+Close the client socket newsockfd in the parent process after forking.
+The child process continues handling the client, while the parent goes back to accept() for new connections.
+The program runs indefinitely until manually terminated.
+
+
+
+Algorithm for TCP Client
+This algorithm outlines how the client program connects to a TCP server, sends messages, and receives responses.
+
+Step 1: Initialize the Client
+Declare necessary variables:
+
+sockfd (socket descriptor)
+addr (server address structure)
+ret (return value for error handling)
+buffer (buffer to store messages)
+serverAddr (server IP address from command-line arguments)
+Check if the user has provided the server IP address as a command-line argument.
+
+If not, print a usage message and exit.
+Step 2: Create a TCP Socket
+Use socket(AF_INET, SOCK_STREAM, 0) to create a TCP socket.
+If socket creation fails, print an error message and exit.
+Step 3: Set Up Server Address
+Initialize addr structure:
+Set addr.sin_family = AF_INET (IPv4).
+Convert and store the server’s IP address using inet_addr(serverAddr).
+Set addr.sin_port = htons(PORT) (convert port number to network byte order).
+Step 4: Connect to the Server
+Use connect(sockfd, (struct sockaddr *)&addr, sizeof(addr)) to connect to the server.
+If connection fails, print an error message and exit.
+Step 5: Send and Receive Messages
+Print a prompt for the user to enter messages.
+
+Enter a loop to handle communication:
+
+Read user input using fgets(buffer, BUF_SIZE, stdin).
+Send the message to the server using send(sockfd, buffer, BUF_SIZE, 0).
+If sending fails, print an error message.
+Receive the server’s response using recv(sockfd, buffer, BUF_SIZE, 0).
+If receiving fails, print an error message.
+Otherwise, display the received message.
+Repeat until the user exits or an error occurs.
+
+Step 6: Cleanup
+Close the socket when communication ends.
